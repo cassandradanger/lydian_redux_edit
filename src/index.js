@@ -26,7 +26,15 @@ const studentList = (state = [], action) => {
 
 // hold only the single student object being edited
 const editStudent = (state  = {}, action) => {
-
+    if(action.type === 'SET_EDIT_STUDENT'){
+        return action.payload;
+    } else if (action.type === 'EDIT_ONCHANGE'){
+        console.log('EDIT', action.payload);
+        return {
+            ...state,
+            [action.payload.property]: action.payload.value
+        }
+    }
     return state;
 }
 
@@ -48,13 +56,15 @@ function* addStudent(action) {
     }
 }
 
-
-
-
+function* saveUpdates(action){
+    console.log('in save updates', action);
+    yield axios.put(`/students/${action.payload.id}`, {github_name: action.payload.github_name});
+}
 
 function* rootSaga() {
     yield takeEvery('FETCH_STUDENTS', fetchStudents);
     yield takeEvery('ADD_STUDENT', addStudent);
+    yield takeEvery('SAVE_UPDATES', saveUpdates)
 }
 
 

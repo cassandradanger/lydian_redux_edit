@@ -8,6 +8,7 @@ function StudentDetail(props) {
 
   function handleEditClick(){
     console.log("in handle click, student: ", props.student);
+    dispatch({ type: 'SET_EDIT_STUDENT', payload: props.student});
     history.push('/edit');
   }
 
